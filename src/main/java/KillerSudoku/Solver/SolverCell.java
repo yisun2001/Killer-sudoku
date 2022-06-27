@@ -1,7 +1,6 @@
 package KillerSudoku.Solver;
 
 import KillerSudoku.Cage;
-import KillerSudoku.Puzzle.Puzzle;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -29,13 +28,7 @@ public class SolverCell {
         for(int i = 0; i < height; i++) // verticaal
             if(i != y)
                 checkNeighbouringCell(cells[i][x]);
-        Point nonet = Puzzle.getNonet(x, y);
-        for(int i = nonet.x; i < nonet.x + 3; i++){ // 3x3 groepen
-            for(int j = nonet.y; j < nonet.y + 3; j++){
-                if(i != x || j != y)
-                    checkNeighbouringCell(cells[j][i]);
-            }
-        }
+
         for(Point p : cage.cells){ // Cellen in dezelfde cage
             if(p.x != x || p.y != y)
                 checkNeighbouringCell(cells[p.y][p.x]);

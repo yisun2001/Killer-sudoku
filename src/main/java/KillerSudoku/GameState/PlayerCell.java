@@ -27,15 +27,6 @@ public class PlayerCell implements Serializable{
         return state;
     }
 
-    public void setState(State state){
-        if(this.state == state)
-            return;
-        this.state = state;
-        if(state == State.CANDIDATES) { // Alle kandidaten en het celnummer worden gereset
-            num = (byte) 0;
-            clearCandidates();
-        }
-    }
 
     public byte getNum(){
         return num;
@@ -43,11 +34,6 @@ public class PlayerCell implements Serializable{
 
     public boolean isCandidate(byte i){ // Is de kandidaat getoond
         return candidates[i-1];
-    }
-
-    public void toggleCandidate(int i){ // Keert de zichtbaarheid van de kandidaat om
-        if(state == State.CANDIDATES)
-            candidates[i-1] = !candidates[i-1];
     }
 
     public void clearCandidates(){
@@ -61,9 +47,4 @@ public class PlayerCell implements Serializable{
         state = State.FINALIZED; // niet te wijzigen
     }
 
-    public void clearNum(){ // Het nummer wordt uit de cel verwijderd
-        num = (byte)0;
-        state = State.CANDIDATES;
-        clearCandidates();
-    }
 }
