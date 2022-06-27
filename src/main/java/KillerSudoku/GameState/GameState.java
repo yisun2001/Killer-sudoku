@@ -1,6 +1,6 @@
 package KillerSudoku.GameState;
 
-import KillerSudoku.Puzzle.Puzzle;
+import KillerSudoku.Puzzle.CageFunctions;
 import KillerSudoku.Utility;
 
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.io.*;
 
 public class GameState implements Serializable { // Huidige spelstatus
     private PlayerCell[][] cells;
-    public Puzzle puzzle;
+    public CageFunctions puzzle;
     private int width, height;
     public Point selection;
     public boolean successGenerate, usedSolutionMenuItem;
@@ -18,7 +18,7 @@ public class GameState implements Serializable { // Huidige spelstatus
         this.height = height;
 
         PlayerCell[][] cells = new PlayerCell[height][width];
-        Puzzle puzzle = new Puzzle(width, height, cageNum, maxSec);
+        CageFunctions puzzle = new CageFunctions(width, height, cageNum, maxSec);
         successGenerate = puzzle.success; // Het controleert of alles met succes is gegenereerd
         if(!successGenerate)
             return;

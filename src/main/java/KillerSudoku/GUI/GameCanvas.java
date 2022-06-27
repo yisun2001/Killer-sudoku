@@ -3,7 +3,6 @@ package KillerSudoku.GUI;
 import KillerSudoku.Cage;
 import KillerSudoku.GameState.GameState;
 import KillerSudoku.GameState.PlayerCell;
-import KillerSudoku.Puzzle.Puzzle;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
