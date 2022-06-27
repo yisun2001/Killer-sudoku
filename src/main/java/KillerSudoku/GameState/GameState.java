@@ -2,25 +2,24 @@ package KillerSudoku.GameState;
 
 import KillerSudoku.Puzzle.Puzzle;
 import KillerSudoku.Utility;
-import javafx.scene.control.Alert;
 
 import java.awt.*;
 import java.io.*;
 
-public class GameState implements Serializable { // Trenutno stanje igre. Koristi se i da se sacuva igra na fajlu
+public class GameState implements Serializable { // Huidige spelstatus
     private PlayerCell[][] cells;
     public Puzzle puzzle;
     private int width, height;
     public Point selection;
     public boolean success, usedSolutionMenuItem;
 
-    public void init(int width, int height, int cageNum, int givenNum, float maxSec) { // Inicijalizacija igre
+    public void init(int width, int height, int cageNum, int givenNum, float maxSec) { // Game-initialisatie
         this.width = width;
         this.height = height;
 
         PlayerCell[][] cells = new PlayerCell[height][width];
         Puzzle puzzle = new Puzzle(width, height, cageNum, maxSec);
-        success = puzzle.success; // Prati da li se uspjesno generisalo sve
+        success = puzzle.success; // Het controleert of alles met succes is gegenereerd
         if(!success)
             return;
         this.cells = cells;

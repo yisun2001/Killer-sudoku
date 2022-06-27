@@ -4,10 +4,10 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cage implements Serializable {
+public class Cage implements Serializable { // genereer killer sudoku cages
     private int sum;
-    private int x, y; // Celija na kojoj se prikazuje suma kaveza
-    public byte colorInd; // Identifikator boje kaveza.
+    private int x, y; // Een cel die de som van de cages weergeeft
+    public byte colorInd; // cage kleur
     public ArrayList<Point> cells;
 
     public Cage(){
@@ -15,13 +15,13 @@ public class Cage implements Serializable {
         cells = new ArrayList<>();
     }
 
-    public void addCell(int x, int y, byte cellNum){ // Dodaje novu celiju
+    public void addCell(int x, int y, byte cellNum){ // Voegt een nieuwe cel toe
         cells.add(new Point(x, y));
         sum += cellNum;
         calcPosition();
     }
 
-    private void calcPosition(){ // Kalkulise na kojoj celiji da stoji suma
+    private void calcPosition(){ // Bereken op welke cel de som moet staan
         int bestInd = 0;
         for(int i = 1; i < cells.size(); i++){
             if(cells.get(i).y < cells.get(bestInd).y || (cells.get(i).y == cells.get(bestInd).y && cells.get(i).x < cells.get(bestInd).x))

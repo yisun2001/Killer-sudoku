@@ -61,7 +61,7 @@ public class PlayerCell implements Serializable{
         state = State.FINALIZED; // niet te wijzigen
     }
 
-    public void clearNum(){ // Izbrise se broj sa celije
+    public void clearNum(){ // Het nummer wordt uit de cel verwijderd
         num = (byte)0;
         state = State.CANDIDATES;
         clearCandidates();

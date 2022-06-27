@@ -1,6 +1,6 @@
 package KillerSudoku;
 
-public class Utility {
+public class Utility { // generate random getallen
     public static int rand(int max){
         return rand(0, max);
     }
