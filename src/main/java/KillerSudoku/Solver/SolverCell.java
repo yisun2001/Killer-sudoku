@@ -1,6 +1,6 @@
 package KillerSudoku.Solver;
 
-import KillerSudoku.Cage;
+import KillerSudoku.Logic.CageSum;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SolverCell {
     public int x, y;
-    public ArrayList<Byte> possibilities; // alle huidige mogelijke waarden van deze cel
+    public ArrayList<Byte> possibilities; // alle huidige mogelijke waarden van een bepaalde cel
 
     public SolverCell(int x, int y){
         this.x = x;
@@ -17,9 +17,10 @@ public class SolverCell {
         possibilities = new ArrayList<>();
         for (int i = 1; i <= 9; i++)
             possibilities.add((byte) i);
+        // possibilities = 1 t/m 9
     }
 
-    public int updatePossibilities(SolverCell[][] cells, Cage cage){ // Elimineert alle opties die niet langer geldig zijn
+    public int updatePossibilities(SolverCell[][] cells, CageSum cage){ // Elimineert alle opties die niet langer geldig zijn
         int width = cells[0].length;
         int height = cells.length;
         for(int i = 0; i < width; i++) // horizontaal
@@ -44,16 +45,16 @@ public class SolverCell {
         return possibilities.size();
     }
 
-    private void addPossibilitiesForCageSum(HashSet<Byte> possibilitiesForCageSum, Cage cage, SolverCell[][] cells, int curr, int currSum){
+    private void addPossibilitiesForCageSum(HashSet<Byte> possibilitiesForCageSum, CageSum cage, SolverCell[][] cells, int curr, int currSum){
         if(curr == cage.cells.size()){
-           // Recursie basis. Het nummer dat nodig is om cage te bereiken, wordt toegevoegd als het geldig is
+           // Recursie basis. Het nummer dat nodig is om cage getal te bereiken, wordt toegevoegd als het geldig is
             int num = cage.getSum() - currSum;
             if(num <= 9 && num >= 1)
                 possibilitiesForCageSum.add((byte)num);
             return;
         }
         if(cage.cells.get(curr).x == x && cage.cells.get(curr).y == y) {
-           // Als de huidige cel dezelfde is, worden ze overgeslagen omdat pas na deze methode
+           // Als de huidige cel hezelfde is, worden ze overgeslagen omdat pas na deze methode
             // de mogelijkheden ervan worden gebruikt
             addPossibilitiesForCageSum(possibilitiesForCageSum, cage, cells, curr + 1, currSum);
             return;
@@ -63,7 +64,7 @@ public class SolverCell {
             addPossibilitiesForCageSum(possibilitiesForCageSum, cage, cells, curr + 1, currSum + neighbourPoss.get(i));
     }
 
-    private void checkNeighbouringCell(SolverCell c){ // Za celije u istoj horizontali, vertikali, nonetu ili kavezu
+    private void checkNeighbouringCell(SolverCell c){ // Voor cellen in dezelfde horizontale, verticale, nonet of kooi
         if(c.possibilities.size() == 1)
             removePossibility(c.possibilities.get(0));
     }

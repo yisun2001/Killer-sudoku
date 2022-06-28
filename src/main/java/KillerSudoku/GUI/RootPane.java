@@ -1,7 +1,7 @@
 package KillerSudoku.GUI;
 
 import KillerSudoku.GUI.Menus.GameMenu;
-import KillerSudoku.GameState.GameState;
+import KillerSudoku.State.GameState;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -27,7 +27,7 @@ public class RootPane extends BorderPane { // Glavni GUI element koji sadrzi sve
     // Sadrzi sve menije
     private MenuBar getMenuBar(Stage primaryStage, GameCanvas gameCanvas, GameState gameState){
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(new GameMenu(primaryStage, gameCanvas, gameState));
+        menuBar.getMenus().addAll(new GameMenu(gameCanvas, gameState));
         return menuBar;
     }
 

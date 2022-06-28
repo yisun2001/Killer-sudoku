@@ -1,16 +1,16 @@
-package KillerSudoku;
+package KillerSudoku.Logic;
 
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cage implements Serializable { // genereer killer sudoku cages
+public class CageSum implements Serializable { // genereer killer sudoku cages
     private int sum;
     private int x, y; // Een cel die de som van de cages weergeeft
     public byte colorInd; // cage kleur
     public ArrayList<Point> cells;
 
-    public Cage(){
+    public CageSum(){
         sum = 0;
         cells = new ArrayList<>();
     }
@@ -21,7 +21,7 @@ public class Cage implements Serializable { // genereer killer sudoku cages
         calcPosition();
     }
 
-    private void calcPosition(){ // Bereken op welke cel de som moet staan
+    private void calcPosition(){ // Bereken op welke cel de som va de cage moet staan
         int bestInd = 0;
         for(int i = 1; i < cells.size(); i++){
             if(cells.get(i).y < cells.get(bestInd).y || (cells.get(i).y == cells.get(bestInd).y && cells.get(i).x < cells.get(bestInd).x))

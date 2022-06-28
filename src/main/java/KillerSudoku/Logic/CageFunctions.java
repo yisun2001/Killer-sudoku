@@ -1,8 +1,6 @@
-package KillerSudoku.Puzzle;
+package KillerSudoku.Logic;
 
-import KillerSudoku.Cage;
 import KillerSudoku.Solver.Solver;
-import KillerSudoku.Utility;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -14,15 +12,14 @@ public class CageFunctions implements Serializable { // Ppresenteert de Killer S
     private byte[][] cells;
     private int[][] cellCageIndexes; // De cage-index waartoe alle cellen behoren
     private int width, height;
-    public Cage[] cages;
+    public CageSum[] cages;
     public boolean success;
 
-    public CageFunctions(int width, int height, int cageNum, float maxSec){
+    public CageFunctions(int width, int height, int cageNum){
         this.width = width;
         this.height = height;
 
         success = false;
-        long startTime = System.nanoTime();
         cells = new byte[height][width];
         fillIn(); // De nummers van alle cellen zijn ingesteld
         while (!success){ // Verschillende willekeurige kooien worden getest totdat een partitie met precies één oplossing is gevonden
@@ -37,19 +34,19 @@ public class CageFunctions implements Serializable { // Ppresenteert de Killer S
         // gaat het een stap terug via de geschiedenisstapel
         int width = cells[0].length;
         int height = cells.length;
-        Stack<FillCell> history = new Stack<>(); // Vroeger een stap terug kunnen doen
+        Stack<FillCells> history = new Stack<>(); // Om een stap terug kunnen doen
         List<Point> order = new ArrayList<>(); //Bepaalt de volgorde waarin de cellen worden gevuld. Op dit moment is het altijd dezelfde
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
                 order.add(new Point(x, y));
         while (history.size() <= order.size()) { // Het werkt totdat elke cel is gevuld
             if (history.size() == 0)
-                history.push(new FillCell(order.get(0), 0, cells));
-            FillCell currCell = history.peek();
+                history.push(new FillCells(order.get(0), 0, cells));
+            FillCells currCell = history.peek();
             if (currCell.hasNextPossibility()) {
                 currCell.tryNextPossibility(cells);
                 if (history.size() < order.size())
-                    history.push(new FillCell(order.get(currCell.cellInd + 1), currCell.cellInd + 1, cells));
+                    history.push(new FillCells(order.get(currCell.cellInd + 1), currCell.cellInd + 1, cells));
                 else
                     return; //Gevuld
             } else { // Hij doet een stap achteruit
@@ -60,16 +57,16 @@ public class CageFunctions implements Serializable { // Ppresenteert de Killer S
     }
 
     private void generateCages(int num){
-        cages = new Cage[num];
+        cages = new CageSum[num];
         for (int i = 0; i < cages.length; i++)
-            cages[i] = new Cage();
+            cages[i] = new CageSum();
 
         cellCageIndexes = new int[height][width];
         for (int y = 0; y < height; y++)
             for(int x = 0; x < width; x++)
                 cellCageIndexes[y][x] = -1;
 
-        ArrayList<CageGrower> cageGrowers = new ArrayList<>(); // Lijst van cage-expansiecellen.
+        ArrayList<GrowCage> cageGrowers = new ArrayList<>(); // Lijst van cage-expansiecellen.
 
         for(int i = 0; i < cages.length; i++){ // De originele cellen van alle kooien worden willekeurig geselecteerd
             int x = 0, y = 0;
@@ -78,7 +75,7 @@ public class CageFunctions implements Serializable { // Ppresenteert de Killer S
                 y = Utility.rand(height - 1);
             }
             cellCageIndexes[y][x] = i;
-            cageGrowers.add(new CageGrower(x, y, i));
+            cageGrowers.add(new GrowCage(x, y, i));
         }
 
         for(int i = 0; i < cageGrowers.size(); i++)
@@ -86,7 +83,7 @@ public class CageFunctions implements Serializable { // Ppresenteert de Killer S
 
         while (cageGrowers.size() > 0){
             int minInd = indOfMin(cageGrowers);
-            CageGrower cg = cageGrowers.get(minInd);
+            GrowCage cg = cageGrowers.get(minInd);
             cageGrowers.remove(minInd);
 
             if(cellCageIndexes[cg.y][cg.x] == -1 && !cages[cg.cageInd].hasNum(cells[cg.y][cg.x], cells)) { // Als deze cel nog niet voorbij is
@@ -95,7 +92,7 @@ public class CageFunctions implements Serializable { // Ppresenteert de Killer S
                 for (int x = -1; x <= 1; x++) // Alle celburen in cagegrowers worden toegevoegd om de kooi verder uit te breiden
                     for (int y = -1; y <= 1; y++)
                         if ((x == 0 || y == 0) && (x != 0 || y != 0) && cg.x + x >= 0 && cg.y + y >= 0 && cg.x + x < width && cg.y + y < height)
-                            cageGrowers.add(new CageGrower(cg.x + x, cg.y + y, cg.cageInd));
+                            cageGrowers.add(new GrowCage(cg.x + x, cg.y + y, cg.cageInd));
             }
         }
 
@@ -112,7 +109,7 @@ public class CageFunctions implements Serializable { // Ppresenteert de Killer S
         colorCages(order); // dezelfde kleur geven aan de kooien zodat de gebruiker weet welke cellen erbij horen
     }
 
-    private int indOfMin(ArrayList<CageGrower> cageGrowers){ //Retourneert de index van de cel die bij de kooi hoort met het kleinste huidige aantal cellen
+    private int indOfMin(ArrayList<GrowCage> cageGrowers){ //Retourneert de index van de cel die bij de kooi hoort met het kleinste huidige aantal cellen
         int minInd = 0;
         int min = cages[cageGrowers.get(0).cageInd].cells.size();
         for(int i = 1; i < cageGrowers.size(); i++) {
@@ -168,7 +165,7 @@ public class CageFunctions implements Serializable { // Ppresenteert de Killer S
         return true;
     }
 
-    public Cage cageOf(int cellX, int cellY){
+    public CageSum cageOf(int cellX, int cellY){
         return cages[cellCageIndexes[cellY][cellX]];
     }
 

@@ -1,8 +1,8 @@
 package KillerSudoku.GUI;
 
-import KillerSudoku.Cage;
-import KillerSudoku.GameState.GameState;
-import KillerSudoku.GameState.PlayerCell;
+import KillerSudoku.Logic.CageSum;
+import KillerSudoku.State.GameState;
+import KillerSudoku.State.PlayerCell;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -18,20 +18,20 @@ public class GameCanvas extends Canvas {
 
     private static final int BOARD_BORDER_THICKNESS = 10, NONET_BORDER_THICKNESS = 5, CELL_BORDER_THICKNESS = 1;
 
-    private static final int CELL_SIZE = 80; // Duzina stranica za celije
+    private static final int CELL_SIZE = 80; // Paginalengte voor cellen
 
-    // Boje kojim se popunjavaju pozadina, ivice i drugi elementi
+    // Kleuren die de achtergrond, randen en andere elementen vullen
     private static final Color BACKGROUND_COLOR = Color.WHITE, TEXT_COLOR = Color.BLACK, BORDER_COLOR = Color.BLACK;
 
-    // 4 boje koje se koriste za bojenje kaveza
+    // 4 kleuren om de cage te differentieren
     private static final Color[] CAGE_COLORS = new Color[]{Color.rgb(255, 253, 152), Color.rgb(207, 231, 153), Color.rgb(203, 232, 250), Color.rgb(248, 207, 223), Color.rgb(248, 207, 223)};
 
-    // Velicine fontova
+    // Lettergroottes
     private static final double MAIN_NUM_FONT_SIZE = 50;
     private static final double CANDIDATE_FONT_SIZE = 25;
     private static final double CAGE_SUM_FONT_SIZE = 15;
 
-    // Fontovi
+    // Lettertypen
     private static Font MAIN_NUM_FONT;
     private static Font CANDIDATE_FONT;
     private static Font CAGE_SUM_FONT;
@@ -101,7 +101,7 @@ public class GameCanvas extends Canvas {
     private void drawCageSums(){ // Sommen van kooien worden getrokken
         if(gameState.puzzle.cages.length == 1)
             return;
-        for(Cage c : gameState.puzzle.cages){
+        for(CageSum c : gameState.puzzle.cages){
             Point p = cellInnerPos(c.getX(), c.getY());
             drawNum(c.getSum(), p.x, p.y, CAGE_SUM_FONT, CAGE_COLORS[c.colorInd].invert(), false);
         }
@@ -172,7 +172,7 @@ public class GameCanvas extends Canvas {
         drawNum(num, x, y, font, TEXT_COLOR, true);
     }
 
-    private void drawNum(int num, int x, int y, Font font, Color color, boolean isCentered){ // Een meer algemene methode voor het tekenen van nummers. Het wordt ook gebruikt voor kooisommen
+    private void drawNum(int num, int x, int y, Font font, Color color, boolean isCentered){ // Een meer algemene methode voor het tekenen van nummers. Het wordt ook gebruikt voor cage sommen
         if(isCentered){
             g.setTextAlign(TextAlignment.CENTER);
             g.setTextBaseline(VPos.CENTER);

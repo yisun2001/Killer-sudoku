@@ -1,7 +1,7 @@
-package KillerSudoku.GameState;
+package KillerSudoku.State;
 
-import KillerSudoku.Puzzle.CageFunctions;
-import KillerSudoku.Utility;
+import KillerSudoku.Logic.CageFunctions;
+import KillerSudoku.Logic.Utility;
 
 import java.awt.*;
 import java.io.*;
@@ -18,7 +18,7 @@ public class GameState implements Serializable { // Huidige spelstatus
         this.height = height;
 
         PlayerCell[][] cells = new PlayerCell[height][width];
-        CageFunctions puzzle = new CageFunctions(width, height, cageNum, maxSec);
+        CageFunctions puzzle = new CageFunctions(width, height, cageNum);
         successGenerate = puzzle.success; // Het controleert of alles met succes is gegenereerd
         if(!successGenerate)
             return;

@@ -6,13 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-// Bozovic Boban 1/18 C
 
 public class Main extends Application {
 
     public static void main(String[] args){
         launch(args);
-    } // Pocetak programa
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {

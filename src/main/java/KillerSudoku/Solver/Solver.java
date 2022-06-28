@@ -1,32 +1,34 @@
 package KillerSudoku.Solver;
 
-import KillerSudoku.Cage;
+import KillerSudoku.Logic.CageSum;
 
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Solver {
-    public static int numOfSolutions(int[][] cellCageIndexes, Cage[] cages){ // Nalazi da li dati killer sudoku ima 0, 1 ili vise od 1 rjesenja
+    public static int numOfSolutions(int[][] cellCageIndexes, CageSum[] cages){
+        // Vindt of een bepaalde killer-sudoku 0, 1 of meer dan 1 oplossing heeft
+        // moet minstens 1 solution hebben zodat de cages gegenereerd kunnen worden
         SolverCell[][] cells = new SolverCell[cellCageIndexes.length][cellCageIndexes[0].length];
         for(int i = 0; i < cells.length; i++)
             for(int j = 0; j < cells[i].length; j++)
                 cells[i][j] = new SolverCell(j, i);
         int oldPossNum = -1;
         int newPossNum = updateCellPossibilities(cells, cellCageIndexes, cages);
-        while(newPossNum != oldPossNum){ // Prolazi kroz sve celije i rekalkulise njihove mogucnosti dok se ne mogu vise smanjivati
+        while(newPossNum != oldPossNum){ // Het gaat door alle cellen en herberekent hun mogelijkheden totdat ze niet langer kunnen worden verminderd
             oldPossNum = newPossNum;
             newPossNum = updateCellPossibilities(cells, cellCageIndexes, cages);
         }
         if(newPossNum == cells.length * cells[0].length)
-            return 1;
+            return 1; // 1 mogelijkheid gevonden
         ArrayList<SolverCell> undecided = new ArrayList<>();
         for(int i = 0; i < cells.length; i++)
             for(int j = 0; j < cells[i].length; j++)
-                if(cells[i][j].possibilities.size() > 1)
-                    undecided.add(cells[i][j]);
-        if(undecided.size() > 35) // Preveliki broj da se prodje svaka kombinacija
-            return 2; // Nije bitan tacan broj, samo da je veci od 1
+                if(cells[i][j].possibilities.size() > 1) // als de cel mogelijk is
+                    undecided.add(cells[i][j]); // voeg nummer toe aan undecided
+        if(undecided.size() > 35) // Te veel om elke combinatie door te geven
+            return 2; // Het exacte aantal is niet belangrijk, alleen dat het groter is dan 1
         byte[][] cellsCurr = new byte[cells.length][cells[0].length];
         for(int i = 0; i < cells.length; i++)
             for(int j = 0; j < cells[i].length; j++)
@@ -35,7 +37,8 @@ public class Solver {
         return numOfValidCombinations(cellsCurr, cellCageIndexes, cages, undecided, 0);
     }
 
-    private static int numOfValidCombinations(byte[][] cells, int[][] cellCageIndexes, Cage[] cages, ArrayList<SolverCell> undecided, int curr){ // Provjerava svaku kombinaciju brojeva za sve celije koje imaju vise od jednu mogucnost
+    private static int numOfValidCombinations(byte[][] cells, int[][] cellCageIndexes, CageSum[] cages, ArrayList<SolverCell> undecided, int curr){
+        //Controleert elke combinatie van getallen voor alle cellen die meer dan één optie hebben
         if(curr >= undecided.size()){
             for(int i = 0; i < undecided.size(); i++) {
                 int x = undecided.get(i).x;
@@ -49,16 +52,18 @@ public class Solver {
         int num = 0;
         for(int i = 0; i < c.possibilities.size(); i++){
             cells[c.y][c.x] = c.possibilities.get(i);
-            if(isValid(cells, c.x, c.y, cages[cellCageIndexes[c.y][c.x]], false)) // Ostavlja provjeru suma za sami kraj jer neke celije su i dalje 0
+            if(isValid(cells, c.x, c.y, cages[cellCageIndexes[c.y][c.x]], false))
+                // Het laat de somcontrole helemaal tot het einde staan, omdat sommige cellen nog steeds leeg zijn
                 num += numOfValidCombinations(cells, cellCageIndexes, cages, undecided, curr + 1);
             if(num >= 2)
                 return 2;
         }
-        cells[c.y][c.x] = 0; // Vrati na prazno na kraju
+        cells[c.y][c.x] = 0; // keer terug naar 0 aan het einde
         return num;
     }
 
-    private static boolean isValid(byte[][] cells, int x, int y, Cage cage, boolean checkCageSum){ // Provjerava da li data celija zadovoljava sve uslove igre
+    private static boolean isValid(byte[][] cells, int x, int y, CageSum cage, boolean checkCageSum){
+        // Controleert of de gegeven cel aan alle voorwaarden van het spel voldoet
         int width = cells[0].length;
         int height = cells.length;
         byte num = cells[y][x];
@@ -84,7 +89,8 @@ public class Solver {
         return true;
     }
 
-    private static int updateCellPossibilities(SolverCell[][] cells, int[][] cellCageIndexes, Cage[] cages){ // Za sve celije kalkulise mogucnosti i vraca sumu mogucnosti svih celija
+    private static int updateCellPossibilities(SolverCell[][] cells, int[][] cellCageIndexes, CageSum[] cages){
+        // Voor alle cellen berekent het de mogelijkheden en retourneert het de som van de mogelijkheden van alle cellen
         int totalPossNum = 0;
         for(int i = 0; i < cells.length; i++)
             for(int j = 0; j < cells[i].length; j++) {

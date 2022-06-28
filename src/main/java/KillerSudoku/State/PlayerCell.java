@@ -1,4 +1,4 @@
-package KillerSudoku.GameState;
+package KillerSudoku.State;
 
 import java.io.Serializable;
 import java.util.Arrays;

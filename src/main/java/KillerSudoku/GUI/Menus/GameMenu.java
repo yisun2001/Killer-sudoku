@@ -1,18 +1,14 @@
 package KillerSudoku.GUI.Menus;
 
 import KillerSudoku.GUI.GameCanvas;
-import KillerSudoku.GameState.GameState;
-import KillerSudoku.Utility;
+import KillerSudoku.State.GameState;
+import KillerSudoku.Logic.Utility;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-
 public class GameMenu extends Menu {
-    public GameMenu(Stage primaryStage, GameCanvas gameCanvas, GameState gameState){
+    public GameMenu(GameCanvas gameCanvas, GameState gameState){
         setText("Game");
 
         MenuItem showSolutionItem = new MenuItem("Show Solution");

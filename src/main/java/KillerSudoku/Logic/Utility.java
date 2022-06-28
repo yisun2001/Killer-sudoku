@@ -1,4 +1,4 @@
-package KillerSudoku;
+package KillerSudoku.Logic;
 
 public class Utility { // generate random getallen
     public static int rand(int max){

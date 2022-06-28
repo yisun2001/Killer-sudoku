@@ -1,14 +1,14 @@
-package KillerSudoku.Puzzle;
+package KillerSudoku.Logic;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FillCell { // Wordt gebruikt om cellen met getallen te vullen zodat ze de regels van gewone sudoku volgen. Het gaat niet om cages
+public class FillCells { // Wordt gebruikt om cellen met getallen te vullen zodat ze de regels van gewone sudoku volgen. Het gaat niet om cages
     public int x, y, cellInd;
     private ArrayList<Byte> possibilities;
 
-    public FillCell(Point cell, int cellInd, byte[][] cells){
+    public FillCells(Point cell, int cellInd, byte[][] cells){
         this.x = cell.x;
         this.y = cell.y;
         this.cellInd = cellInd;
