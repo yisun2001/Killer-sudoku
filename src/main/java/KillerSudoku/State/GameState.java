@@ -8,12 +8,12 @@ import java.io.*;
 
 public class GameState implements Serializable { // Huidige spelstatus
     private PlayerCell[][] cells;
+    public Point selection;
     public CageFunctions puzzle;
     private int width, height;
-    public Point selection;
-    public boolean successGenerate, usedSolutionMenuItem;
+    public boolean successGenerate, solutionChosen;
 
-    public void init(int width, int height, int cageNum, int givenNum, float maxSec) { // Game-initialisatie
+    public void init(int width, int height, int cageNum, int givenNum) { // Game-initialisatie
         this.width = width;
         this.height = height;
 
@@ -28,7 +28,7 @@ public class GameState implements Serializable { // Huidige spelstatus
             for (int x = 0; x < width; x++)
                 cells[y][x] = new PlayerCell();
         selection = null;
-        usedSolutionMenuItem = false;
+        solutionChosen = false;
 
         for(int i = 0; i < givenNum; i++){
             int x = Utility.rand(width - 1);

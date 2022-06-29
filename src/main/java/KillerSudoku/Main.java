@@ -3,7 +3,6 @@ package KillerSudoku;
 import KillerSudoku.GUI.RootPane;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -20,7 +19,7 @@ public class Main extends Application {
 
     private void initStage(Stage stage){ //
         stage.setResizable(true);
-        stage.setTitle("Killer Sudoku");
+        stage.setTitle("Killer Sudoku Solver by Yi & Bart");
         stage.setScene(new Scene(new RootPane(stage), 800, 800));
         stage.setOnCloseRequest(e -> {
             System.exit(0);

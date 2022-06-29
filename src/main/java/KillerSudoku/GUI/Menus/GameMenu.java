@@ -5,7 +5,6 @@ import KillerSudoku.State.GameState;
 import KillerSudoku.Logic.Utility;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.stage.Stage;
 
 public class GameMenu extends Menu {
     public GameMenu(GameCanvas gameCanvas, GameState gameState){
@@ -13,7 +12,7 @@ public class GameMenu extends Menu {
 
         MenuItem showSolutionItem = new MenuItem("Show Solution");
         showSolutionItem.setOnAction(e -> {
-            gameState.usedSolutionMenuItem = true;
+            gameState.solutionChosen = true;
             for(int i = 0; i < gameState.getWidth(); i++)
                 for(int j = 0; j < gameState.getHeight(); j++)
                     gameState.getCell(i, j).setNum(gameState.puzzle.getNum(i, j));
@@ -24,13 +23,13 @@ public class GameMenu extends Menu {
 
         MenuItem easyItem = new MenuItem("With help");
         easyItem.setOnAction(e -> {
-            gameState.init(gameState.getWidth(), gameState.getHeight(), 40, Utility.rand(10, 15), 5);
+            gameState.init(gameState.getWidth(), gameState.getHeight(), 40, Utility.rand(10, 15));
             gameCanvas.draw();
         });
 
         MenuItem hardItem = new MenuItem("Blank");
         hardItem.setOnAction(e -> {
-            gameState.init(gameState.getWidth(), gameState.getHeight(), 40, 0, 5);
+            gameState.init(gameState.getWidth(), gameState.getHeight(), 40, 0);
             gameCanvas.draw();
         });
 

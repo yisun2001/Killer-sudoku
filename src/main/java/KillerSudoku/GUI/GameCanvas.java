@@ -89,7 +89,7 @@ public class GameCanvas extends Canvas {
         drawBorders();
         drawCageSums();
 
-        if(gameState.usedSolutionMenuItem){ // als je hebt gewonnen
+        if(gameState.solutionChosen){ // als je hebt gewonnen
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Puzzle Solved");
             alert.setHeaderText("Puzzle solved!");

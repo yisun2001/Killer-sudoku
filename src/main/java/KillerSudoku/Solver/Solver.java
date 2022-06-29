@@ -14,13 +14,13 @@ public class Solver {
         for(int i = 0; i < cells.length; i++)
             for(int j = 0; j < cells[i].length; j++)
                 cells[i][j] = new SolverCell(j, i);
-        int oldPossNum = -1;
-        int newPossNum = updateCellPossibilities(cells, cellCageIndexes, cages);
-        while(newPossNum != oldPossNum){ // Het gaat door alle cellen en herberekent hun mogelijkheden totdat ze niet langer kunnen worden verminderd
-            oldPossNum = newPossNum;
-            newPossNum = updateCellPossibilities(cells, cellCageIndexes, cages);
+        int oldPossibleNumber = -1;
+        int newPossibleNumber = updateCellPossibilities(cells, cellCageIndexes, cages);
+        while(newPossibleNumber != oldPossibleNumber){ // Het gaat door alle cellen en herberekent hun mogelijkheden totdat ze niet langer kunnen worden verminderd
+            oldPossibleNumber = newPossibleNumber;
+            newPossibleNumber = updateCellPossibilities(cells, cellCageIndexes, cages);
         }
-        if(newPossNum == cells.length * cells[0].length)
+        if(newPossibleNumber == cells.length * cells[0].length)
             return 1; // 1 mogelijkheid gevonden
         ArrayList<SolverCell> undecided = new ArrayList<>();
         for(int i = 0; i < cells.length; i++)
